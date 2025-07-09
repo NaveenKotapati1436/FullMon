@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   loadNavbar();
 
-  const initialPage = location.pathname.replace("/", "") || "home";
-  loadPage(initialPage, false);
+  // const initialPage = location.pathname.replace("/", "") || "home";
+  // loadPage(initialPage, false);
+  const basePath = "/FullMon/"; // CHANGE this to match your repo name!
+  const path = location.pathname.replace(basePath, "") || "home";
+  loadPage(path, false);
 
   document.body.addEventListener("click", function (e) {
     if (e.target.matches("[data-page]")) {
@@ -12,9 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // window.addEventListener("popstate", function () {
+  //   const page = location.pathname.replace("/", "") || "home";
+  //   loadPage(page, false);
+  // });
   window.addEventListener("popstate", function () {
-    const page = location.pathname.replace("/", "") || "home";
-    loadPage(page, false);
+    const path = location.pathname.replace(basePath, "") || "home";
+    loadPage(path, false);
   });
 });
 
