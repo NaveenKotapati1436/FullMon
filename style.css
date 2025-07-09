@@ -1,0 +1,293 @@
+/* === Reset & Base === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+  padding-top: 20px;
+}
+a {
+  text-decoration: none;
+}
+
+/* === Navbar === */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #00bcd4;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  z-index: 1000;
+}
+.logo a {
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+.nav-links a {
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+.nav-links a:hover {
+  color: #e0f7fa;
+}
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    display: none;
+    margin-top: 1rem;
+  }
+  .nav-links.show {
+    display: flex;
+  }
+}
+
+/* === Hero Section === */
+.hero {
+  background: linear-gradient(to right, #00bcd4, #008c9e);
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+.hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+/* === General Sections === */
+.section {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+.section h2 {
+  font-size: 2rem;
+  color: #00bcd4;
+  margin-bottom: 1.5rem;
+}
+
+/* === Services Grid === */
+.service-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+/* === Cards === */
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}
+
+/* === CTA Box === */
+.cta {
+  background: #e0f7fa;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-top: 3rem;
+}
+
+/* === Button === */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #00bcd4;
+  color: white;
+  border-radius: 6px;
+  font-weight: bold;
+  margin-top: 1rem;
+  transition: background 0.3s, transform 0.2s;
+  border: none;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #007c91;
+  transform: scale(1.03);
+}
+
+/* === About Section List === */
+.about-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1rem;
+}
+.about-list li {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+/* === Contact Form === */
+form.contact-form {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Contact Grid Layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.form-group.full {
+  grid-column: span 2;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  background: #f9f9f9;
+}
+.form-group textarea {
+  resize: vertical;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #00bcd4;
+  background: #fff;
+  outline: none;
+}
+
+/* Floating Labels */
+.form-group label {
+  position: absolute;
+  top: -0.65rem;
+  left: 0.85rem;
+  background: white;
+  padding: 0 0.4rem;
+  font-size: 0.85rem;
+  color: #555;
+  pointer-events: none;
+}
+
+
+/* Form Submission Message */
+#formStatus {
+  margin-top: 1rem;
+  font-weight: 500;
+  color: #007c91;
+  text-align: center;
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
+  .section {
+    padding: 2rem 1rem;
+  }
+  .card {
+    text-align: center;
+  }
+  .btn {
+    width: 100%;
+  }
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  .hero p {
+    font-size: 0.95rem;
+  }
+  .logo a {
+    font-size: 1.2rem;
+  }
+  nav {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  form.contact-form {
+    padding: 1rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr; /* Force single column */
+  }
+
+  .form-group.full {
+    grid-column: span 1 !important;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 1rem;
+    width: 100%;
+  }
+}
