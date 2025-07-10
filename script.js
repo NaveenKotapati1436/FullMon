@@ -104,24 +104,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function loadNavbar() {
   fetch("navbar.html")
-    .then(res => res.text())
-    .then(html => {
+    .then((res) => res.text())
+    .then((html) => {
       document.getElementById("navbar-container").innerHTML = html;
 
       const hamburger = document.getElementById("hamburger");
       const navLinks = document.getElementById("nav-links");
+      const overlay = document.getElementById("overlay");
 
       if (hamburger && navLinks) {
-        // Toggle mobile menu
+        // Toggle menu and overlay on hamburger click
         hamburger.addEventListener("click", () => {
           navLinks.classList.toggle("show");
+          overlay?.classList.toggle("show");
         });
 
-        // ✅ Auto-close mobile menu on nav link click
+        // Close menu and overlay when a nav link is clicked
         navLinks.addEventListener("click", (e) => {
           if (e.target.matches("a[data-page]")) {
             navLinks.classList.remove("show");
+            overlay?.classList.remove("show");
           }
+        });
+
+        // Close menu and overlay when clicking outside (on overlay)
+        overlay?.addEventListener("click", () => {
+          navLinks.classList.remove("show");
+          overlay.classList.remove("show");
         });
       }
     });
