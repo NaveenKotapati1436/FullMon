@@ -53,7 +53,9 @@ function loadPage(page, addToHistory = true) {
       content.innerHTML = html;
 
       if (addToHistory) {
-        history.pushState(null, "", `/${page}`);
+        // history.pushState(null, "", `/${page}`);
+        const basePath = "/FullMon"; // no trailing slash
+        history.pushState(null, "", `${basePath}/${page}`);
       }
 
       // Only initialize after DOM has rendered
