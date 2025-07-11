@@ -39,7 +39,7 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  background: #fff;
+  background: #00bcd4;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -49,7 +49,7 @@ nav {
 }
 .logo a {
   font-size: 1.5rem;
-  color: black;
+  color: white;
   font-weight: bold;
 }
 .nav-links {
@@ -58,7 +58,7 @@ nav {
   gap: 1.5rem;
 }
 .nav-links a {
-  color: black;
+  color: white;
   font-weight: 500;
   transition: color 0.3s;
 }
