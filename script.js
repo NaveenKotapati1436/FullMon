@@ -81,6 +81,7 @@ const basePath = "/FullMon"; // ← Change to your actual repo name (no trailing
 
 document.addEventListener("DOMContentLoaded", () => {
   loadNavbar();
+  loadFooter();
 
   // Get initial path and load corresponding page
   const path = location.pathname.replace(basePath + "/", "") || "home";
@@ -133,6 +134,14 @@ function loadNavbar() {
           overlay.classList.remove("show");
         });
       }
+    });
+}
+
+function loadFooter() {
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("footer-container").innerHTML = html;
     });
 }
 
