@@ -365,3 +365,59 @@ form.contact-form {
     width: 100%;
   }
 }
+
+/* ===== Footer Styles ===== */
+.custom-footer {
+  background-color: #1f2327;
+  color: white;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  font-family: sans-serif;
+  margin-top: 3rem;
+}
+
+.footer-section {
+  flex: 1 1 250px;
+}
+
+.footer-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-section p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.footer-section a {
+  color: #f26c6c;
+  text-decoration: none;
+}
+
+.footer-section .country {
+  color: #f26c6c;
+  font-weight: bold;
+}
+
+.footer-section .note {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.footer-section i {
+  margin-right: 0.5rem;
+  color: #f26c6c;
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .custom-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
