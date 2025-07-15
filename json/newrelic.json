@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Telemetry Ingestion",
+    "description": "Collect and store metrics, logs, events, and traces from all systems with OpenTelemetry support.",
+    "image": "images/telemetry.jpg",
+    "category": "newrelic"
+  },
+  {
+    "title": "NRQL Dashboards",
+    "description": "Create powerful dashboards with New Relic Query Language (NRQL) to visualize key metrics.",
+    "image": "images/nrql.jpg",
+    "category": "newrelic"
+  },
+  {
+    "title": "Frontend Monitoring",
+    "description": "Monitor page load times, JavaScript errors, and user sessions for real UX insights.",
+    "image": "images/browser-monitoring.jpg",
+    "category": "newrelic"
+  },
+  {
+    "title": "Infrastructure Monitoring",
+    "description": "Get deep visibility into host performance, containers, and cloud-native services.",
+    "image": "images/infrastructure.jpg",
+    "category": "newrelic"
+  }
+]

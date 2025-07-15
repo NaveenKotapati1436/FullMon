@@ -86,10 +86,13 @@ function loadPage(page, addToHistory = true) {
         if (page === "contact") setupContactForm();
         if (page === "home") {
           setupServiceModal();
-          loadApproachCards("home");
+          loadApproachCards(page);
         }
         if (page === "dynatrace") {
-          loadDynatraceFeatures("dynatrace");
+          loadDynatraceFeatures(page);
+        }
+        if (page === "newrelic") {
+          loadNewRelicFeatures(page);
         }
       });
     })
@@ -174,7 +177,10 @@ function setupServiceModal() {
 
 function loadApproachCards(category = "home") {
   const container = document.getElementById("card-container");
-  if (!container) return;
+  if (!container) {
+    console.warn("#card-container not found");
+    return;
+  }
 
   fetch(`${basePath}/json/cards.json`)
     .then(res => res.json())
@@ -227,9 +233,67 @@ function loadDynatraceFeatures(category = "dynatrace") {
           <p>${item.description}</p>
         </div>
       `).join("");
-    })
+
+      // flip cards
+    // container.innerHTML = filtered.map(item => `
+    //   <div class="flip-card">
+    //     <div class="flip-inner">
+    //       <div class="flip-front" style="background-image: url('${item.image}');">
+    //         <h3>${item.title}</h3>
+    //       </div>
+    //       <div class="flip-back">
+    //         <p>${item.description}</p>
+    //       </div>
+    //     </div>
+    //   </div>
+    // `).join("");
+  })
     .catch(err => {
       console.error("Failed to load Dynatrace features:", err);
       container.innerHTML = `<p style="color:red;">Could not load Dynatrace features.</p>`;
     });
 }
+
+function loadNewRelicFeatures(category = "newrelic") {
+  const container = document.getElementById("newrelic-features");
+  if (!container) {
+    console.warn("#newrelic-features not found");
+    return;
+  }
+
+  fetch(`${basePath}/json/newrelic.json`)
+    .then(res => res.json())
+    .then(data => {
+      const filtered = data.filter(item => item.category === category);
+      if (filtered.length === 0) {
+        container.innerHTML = `<p>No features found for ${category}.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="feature-card">
+          <img src="${item.image}" alt="${item.title}">
+          <h4>${item.title}</h4>
+          <p>${item.description}</p>
+        </div>
+      `).join("");
+      // flip cards
+      // container.innerHTML = filtered.map(item => `
+      //   <div class="flip-card">
+      //     <div class="flip-inner">
+      //       <div class="flip-front" style="background-image: url('${item.image}');">
+      //         <h3>${item.title}</h3>
+      //       </div>
+      //       <div class="flip-back">
+      //         <p>${item.description}</p>
+      //       </div>
+      //     </div>
+      //   </div>
+      // `).join("");
+    })
+    .catch(err => {
+      console.error("Failed to load New Relic features:", err);
+      container.innerHTML = `<p style="color:red;">Could not load New Relic features.</p>`;
+    });
+}
+
