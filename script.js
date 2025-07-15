@@ -1,78 +1,85 @@
 // 🔁 Automatically detect basePath
 const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1";
-const basePath = isLocalhost ? "" : "/FullMon"; // Change this to your GitHub repo name if needed
+const basePath = isLocalhost ? "" : "/FullMon"; // Change this to your repo/folder name
 
 document.addEventListener("DOMContentLoaded", () => {
   loadNavbar();
   loadFooter();
 
-  // Load initial page based on path
-  const path = location.pathname.replace(basePath + "/", "") || "home";
+  const path = getPageFromPath(location.pathname);
   loadPage(path, false);
 
-  // Intercept internal navigation
-  document.body.addEventListener("click", function (e) {
-    if (e.target.matches("[data-page]")) {
+  // Internal navigation
+  document.body.addEventListener("click", (e) => {
+    const target = e.target.closest("[data-page]");
+    if (target) {
       e.preventDefault();
-      const page = e.target.getAttribute("data-page");
+      const page = target.getAttribute("data-page");
       loadPage(page, true);
     }
   });
 
-  // Handle browser back/forward
-  window.addEventListener("popstate", function () {
-    const path = location.pathname.replace(basePath + "/", "") || "home";
+  // Handle browser navigation
+  window.addEventListener("popstate", () => {
+    const path = getPageFromPath(location.pathname);
     loadPage(path, false);
   });
 
-  // 🔽 Setup modal if it's present
-  setupServiceModal();
   setupDropdownToggle();
+  setupServiceModal(); // Call even if modal is not on every page
 });
 
+// 🔍 Get logical page name from URL
+function getPageFromPath(pathname) {
+  return pathname.replace(`${basePath}/`, "") || "home";
+}
+
+// 🌐 Load Navbar
 function loadNavbar() {
   fetch("navbar.html")
-    .then((res) => res.text())
-    .then((html) => {
+    .then(res => res.text())
+    .then(html => {
       document.getElementById("navbar-container").innerHTML = html;
 
       const hamburger = document.getElementById("hamburger");
       const navLinks = document.getElementById("nav-links");
       const overlay = document.getElementById("overlay");
 
-      if (hamburger && navLinks) {
-        hamburger.addEventListener("click", () => {
-          navLinks.classList.toggle("show");
-          overlay?.classList.toggle("show");
-        });
+      hamburger?.addEventListener("click", () => {
+        navLinks?.classList.toggle("show");
+        overlay?.classList.toggle("show");
+      });
 
-        navLinks.addEventListener("click", (e) => {
-          if (e.target.matches("a[data-page]")) {
-            navLinks.classList.remove("show");
-            overlay?.classList.remove("show");
-          }
-        });
-
-        overlay?.addEventListener("click", () => {
+      navLinks?.addEventListener("click", (e) => {
+        if (e.target.matches("a[data-page]")) {
           navLinks.classList.remove("show");
-          overlay.classList.remove("show");
-        });
-      }
-    });
+          overlay?.classList.remove("show");
+        }
+      });
+
+      overlay?.addEventListener("click", () => {
+        navLinks?.classList.remove("show");
+        overlay?.classList.remove("show");
+      });
+    })
+    .catch(err => console.error("Navbar load error:", err));
 }
 
+// 🌐 Load Footer
 function loadFooter() {
   fetch("footer.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("footer-container").innerHTML = html;
-    });
+    })
+    .catch(err => console.error("Footer load error:", err));
 }
 
+// 📄 Load Main Content Page
 function loadPage(page, addToHistory = true) {
   fetch(`pages/${page}.html`)
     .then(res => {
-      if (!res.ok) throw new Error("Page not found");
+      if (!res.ok) throw new Error(`Page not found: ${page}`);
       return res.text();
     })
     .then(html => {
@@ -82,25 +89,25 @@ function loadPage(page, addToHistory = true) {
         history.pushState(null, "", `${basePath}/${page}`);
       }
 
-      // Run page-specific scripts
-      if (page === "contact") {
-        requestAnimationFrame(setupContactForm);
-      }
-
-      if (page === "home") {
-        requestAnimationFrame(setupServiceModal);
-      }
+      // Trigger page-specific logic
+      if (page === "contact") setupContactForm();
+      if (page === "home") setupServiceModal();
     })
-    .catch((err) => {
-      console.error("Error loading page:", err);
-      document.getElementById("main-content").innerHTML =
-        "<h2>Page not found</h2><p>The page you requested does not exist.</p>";
+    .catch(err => {
+      console.error(err);
+      document.getElementById("main-content").innerHTML = `
+        <h2>Page Not Found</h2>
+        <p>The requested page <strong>${page}</strong> does not exist.</p>
+      `;
     });
 }
 
+// 📬 Contact Form Enhancer
 function setupContactForm() {
   const checkboxes = document.querySelectorAll('input[name="services[]"]');
   const previewContainer = document.getElementById("service-tags-preview");
+
+  if (!previewContainer) return;
 
   function updateSelectedTags() {
     const selected = Array.from(checkboxes)
@@ -114,7 +121,32 @@ function setupContactForm() {
   updateSelectedTags();
 }
 
-// 🆕 Modal setup for service selection (runs on homepage)
+// 🔽 Dropdown toggle (e.g., for nav Services)
+function setupDropdownToggle() {
+  document.addEventListener("click", (e) => {
+    const toggle = e.target.closest(".dropdown-toggle");
+
+    if (toggle) {
+      e.preventDefault();
+      const dropdown = toggle.closest(".dropdown");
+      const menu = dropdown?.querySelector(".dropdown-menu");
+
+      // Close all others
+      document.querySelectorAll(".dropdown-menu.show").forEach(m => {
+        if (m !== menu) m.classList.remove("show");
+      });
+
+      menu?.classList.toggle("show");
+    } else {
+      // Clicked outside
+      document.querySelectorAll(".dropdown-menu.show").forEach(menu => {
+        menu.classList.remove("show");
+      });
+    }
+  });
+}
+
+// 🪟 Modal for services (homepage only)
 function setupServiceModal() {
   const modal = document.getElementById("services-modal");
   const openBtn = document.getElementById("explore-services-btn");
@@ -146,30 +178,3 @@ function setupServiceModal() {
     });
   });
 }
-
-function setupDropdownToggle() {
-  document.addEventListener("click", (e) => {
-    // Handle Services dropdown toggle only
-    if (e.target.matches(".dropdown-toggle")) {
-      e.preventDefault();
-
-      const dropdown = e.target.closest(".dropdown");
-      const menu = dropdown.querySelector(".dropdown-menu");
-
-      // Close any open dropdowns
-      document.querySelectorAll(".dropdown-menu").forEach(menu => {
-        if (menu !== dropdown.querySelector(".dropdown-menu")) {
-          menu.classList.remove("show");
-        }
-      });
-
-      menu.classList.toggle("show");
-    } else {
-      // Clicked outside dropdown — close all
-      document.querySelectorAll(".dropdown-menu").forEach(menu => {
-        menu.classList.remove("show");
-      });
-    }
-  });
-}
-

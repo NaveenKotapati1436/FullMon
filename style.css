@@ -556,34 +556,22 @@ footer {
 /* ===Section Approach=== */
 /* === Default: Desktop Grid === */
 .approach-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-  perspective: 1000px;
-}
-
-/* === Auto-Scrolling Carousel Wrapper === */
-.approach-carousel-wrapper {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-}
-
-/* === Auto-scroll animation (applied to .auto-scroll) === */
-.approach-cards.auto-scroll {
   display: flex;
   gap: 1.5rem;
   animation: scroll-left 30s linear infinite;
   will-change: transform;
 }
 
-/* ✅ Pause auto-scroll when hovering over any part of the card row */
-.approach-carousel-wrapper:hover .auto-scroll {
+.approach-carousel-wrapper {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.approach-carousel-wrapper:hover .approach-cards {
   animation-play-state: paused;
 }
 
-/* === Keyframe for continuous leftward scroll === */
 @keyframes scroll-left {
   0% {
     transform: translateX(0);
@@ -593,11 +581,10 @@ footer {
   }
 }
 
-/* === Flip Card Setup === */
 .flip-card {
   flex: 0 0 300px;
   height: 250px;
-  position: relative;
+  perspective: 1000px;
   scroll-snap-align: start;
 }
 
@@ -645,7 +632,7 @@ footer {
   font-size: 1rem;
 }
 
-/* Optional: remove scrollbar for cleaner look */
+/* Hide scrollbar */
 .approach-cards::-webkit-scrollbar {
   display: none;
 }
