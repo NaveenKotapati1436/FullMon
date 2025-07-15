@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Real User Monitoring (RUM)",
+    "image": "images/real-user-monitoring.jpg",
+    "description": "Capture every click, tap, and swipe to understand user experience in real-time.",
+    "category": "dynatrace"
+  },
+  {
+    "title": "Application Performance Monitoring",
+    "image": "images/apm.jpg",
+    "description": "Gain full visibility into your code-level performance across services.",
+    "category": "dynatrace"
+  },
+  {
+    "title": "Cloud & Infrastructure Monitoring",
+    "image": "images/cloud.jpg",
+    "description": "Track infrastructure health across AWS, Azure, Kubernetes, and on-prem.",
+    "category": "dynatrace"
+  },
+  {
+    "title": "AI-Powered Problem Detection",
+    "image": "images/aiops.jpg",
+    "description": "Dynatrace’s Davis AI identifies root causes, not just symptoms.",
+    "category": "dynatrace"
+  }
+]

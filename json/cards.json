@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Implementation",
+    "image": "images/implementation.png",
+    "description": "End-to-end implementation of Dynatrace and New Relic tailored to your infrastructure and business needs.",
+    "category": "home"
+  },
+  {
+    "title": "24/7 Monitoring",
+    "image": "images/monitoring.png",
+    "description": "We monitor your environment round-the-clock, resolve issues with RCA, and provide preventive guidance.",
+    "category": "home"
+  },
+  {
+    "title": "Optimization",
+    "image": "images/optimization.png",
+    "description": "Analyze performance metrics and fine-tune configurations for speed, availability, and efficiency.",
+    "category": "home"
+  },
+  {
+    "title": "Predictive Intelligence",
+    "image": "images/intelligence.png",
+    "description": "AI-powered insights to predict risks, detect patterns, and prevent user-impacting incidents.",
+    "category": "home"
+  },
+  {
+    "title": "Dashboards",
+    "image": "images/dashboard.png",
+    "description": "Customized dashboards and alerts built around your KPIs for full-stack visibility.",
+    "category": "home"
+  },
+  {
+    "title": "Training",
+    "image": "images/training.png",
+    "description": "Hands-on sessions, documentation, and continuous support for teams using APM tools.",
+    "category": "home"
+  }
+]

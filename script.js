@@ -1,6 +1,5 @@
-// 🔁 Automatically detect basePath
 const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1";
-const basePath = isLocalhost ? "" : "/FullMon"; // Change this to your repo/folder name
+const basePath = isLocalhost ? "" : "/FullMon";
 
 document.addEventListener("DOMContentLoaded", () => {
   loadNavbar();
@@ -9,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const path = getPageFromPath(location.pathname);
   loadPage(path, false);
 
-  // Internal navigation
   document.body.addEventListener("click", (e) => {
     const target = e.target.closest("[data-page]");
     if (target) {
@@ -19,24 +17,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Handle browser navigation
   window.addEventListener("popstate", () => {
     const path = getPageFromPath(location.pathname);
     loadPage(path, false);
   });
 
   setupDropdownToggle();
-  setupServiceModal(); // Call even if modal is not on every page
+  setupServiceModal();
 });
 
-// 🔍 Get logical page name from URL
 function getPageFromPath(pathname) {
   return pathname.replace(`${basePath}/`, "") || "home";
 }
 
-// 🌐 Load Navbar
 function loadNavbar() {
-  fetch("navbar.html")
+  fetch(`${basePath}/navbar.html`)
     .then(res => res.text())
     .then(html => {
       document.getElementById("navbar-container").innerHTML = html;
@@ -65,9 +60,8 @@ function loadNavbar() {
     .catch(err => console.error("Navbar load error:", err));
 }
 
-// 🌐 Load Footer
 function loadFooter() {
-  fetch("footer.html")
+  fetch(`${basePath}/footer.html`)
     .then(res => res.text())
     .then(html => {
       document.getElementById("footer-container").innerHTML = html;
@@ -75,9 +69,8 @@ function loadFooter() {
     .catch(err => console.error("Footer load error:", err));
 }
 
-// 📄 Load Main Content Page
 function loadPage(page, addToHistory = true) {
-  fetch(`pages/${page}.html`)
+  fetch(`${basePath}/pages/${page}.html`)
     .then(res => {
       if (!res.ok) throw new Error(`Page not found: ${page}`);
       return res.text();
@@ -89,9 +82,16 @@ function loadPage(page, addToHistory = true) {
         history.pushState(null, "", `${basePath}/${page}`);
       }
 
-      // Trigger page-specific logic
-      if (page === "contact") setupContactForm();
-      if (page === "home") setupServiceModal();
+      requestAnimationFrame(() => {
+        if (page === "contact") setupContactForm();
+        if (page === "home") {
+          setupServiceModal();
+          loadApproachCards("home");
+        }
+        if (page === "dynatrace") {
+          loadDynatraceFeatures("dynatrace");
+        }
+      });
     })
     .catch(err => {
       console.error(err);
@@ -102,11 +102,9 @@ function loadPage(page, addToHistory = true) {
     });
 }
 
-// 📬 Contact Form Enhancer
 function setupContactForm() {
   const checkboxes = document.querySelectorAll('input[name="services[]"]');
   const previewContainer = document.getElementById("service-tags-preview");
-
   if (!previewContainer) return;
 
   function updateSelectedTags() {
@@ -121,24 +119,20 @@ function setupContactForm() {
   updateSelectedTags();
 }
 
-// 🔽 Dropdown toggle (e.g., for nav Services)
 function setupDropdownToggle() {
   document.addEventListener("click", (e) => {
     const toggle = e.target.closest(".dropdown-toggle");
-
     if (toggle) {
       e.preventDefault();
       const dropdown = toggle.closest(".dropdown");
       const menu = dropdown?.querySelector(".dropdown-menu");
 
-      // Close all others
       document.querySelectorAll(".dropdown-menu.show").forEach(m => {
         if (m !== menu) m.classList.remove("show");
       });
 
       menu?.classList.toggle("show");
     } else {
-      // Clicked outside
       document.querySelectorAll(".dropdown-menu.show").forEach(menu => {
         menu.classList.remove("show");
       });
@@ -146,7 +140,6 @@ function setupDropdownToggle() {
   });
 }
 
-// 🪟 Modal for services (homepage only)
 function setupServiceModal() {
   const modal = document.getElementById("services-modal");
   const openBtn = document.getElementById("explore-services-btn");
@@ -177,4 +170,66 @@ function setupServiceModal() {
       loadPage(page, true);
     });
   });
+}
+
+function loadApproachCards(category = "home") {
+  const container = document.getElementById("card-container");
+  if (!container) return;
+
+  fetch(`${basePath}/json/cards.json`)
+    .then(res => res.json())
+    .then(cards => {
+      const filtered = cards.filter(card => card.category === category);
+      if (filtered.length === 0) {
+        container.innerHTML = `<p>No cards found for ${category}.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(card => `
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front" style="background-image: url('${card.image}');">
+              <h3>${card.title}</h3>
+            </div>
+            <div class="flip-back">
+              <p>${card.description}</p>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    })
+    .catch(err => {
+      console.error("Failed to load cards:", err);
+      container.innerHTML = `<p style="color:red;">Could not load services.</p>`;
+    });
+}
+
+function loadDynatraceFeatures(category = "dynatrace") {
+  const container = document.getElementById("dynatrace-features");
+  if (!container) {
+    console.warn("#dynatrace-features not found");
+    return;
+  }
+
+  fetch(`${basePath}/json/dynatrace.json`)
+    .then(res => res.json())
+    .then(data => {
+      const filtered = data.filter(item => item.category === category);
+      if (filtered.length === 0) {
+        container.innerHTML = `<p>No features found for ${category}.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="feature-card">
+          <img src="${item.image}" alt="${item.title}">
+          <h4>${item.title}</h4>
+          <p>${item.description}</p>
+        </div>
+      `).join("");
+    })
+    .catch(err => {
+      console.error("Failed to load Dynatrace features:", err);
+      container.innerHTML = `<p style="color:red;">Could not load Dynatrace features.</p>`;
+    });
 }
