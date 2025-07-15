@@ -606,7 +606,8 @@ footer {
   position: relative;
 }
 
-.flip-card:hover .flip-inner {
+.flip-card:hover .flip-inner,
+.flip-card.flipped .flip-inner {
   transform: rotateY(180deg);
 }
 

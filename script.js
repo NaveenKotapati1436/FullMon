@@ -17,6 +17,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  document.body.addEventListener("click", (e) => {
+    const card = e.target.closest(".flip-card");
+    if (card) {
+      // Toggle flip on tap (mobile)
+      card.classList.toggle("flipped");
+    }
+  });
+
   window.addEventListener("popstate", () => {
     const path = getPageFromPath(location.pathname);
     loadPage(path, false);
