@@ -203,11 +203,30 @@ function loadApproachCards(category = "home") {
           </div>
         </div>
       `).join("");
+
+      setupSwipeOnMobile(container);
     })
     .catch(err => {
       console.error("Failed to load cards:", err);
       container.innerHTML = `<p style="color:red;">Could not load services.</p>`;
     });
+}
+
+function setupSwipeOnMobile(container) {
+  if (window.innerWidth >= 768) return;
+
+  let startX = 0, scrollLeft = 0;
+
+  container.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].pageX - container.offsetLeft;
+    scrollLeft = container.scrollLeft;
+  });
+
+  container.addEventListener("touchmove", (e) => {
+    const x = e.touches[0].pageX - container.offsetLeft;
+    const walk = (startX - x) * 1.5;
+    container.scrollLeft = scrollLeft + walk;
+  });
 }
 
 function loadDynatraceFeatures(category = "dynatrace") {
@@ -234,20 +253,20 @@ function loadDynatraceFeatures(category = "dynatrace") {
         </div>
       `).join("");
 
-      // flip cards
-    // container.innerHTML = filtered.map(item => `
-    //   <div class="flip-card">
-    //     <div class="flip-inner">
-    //       <div class="flip-front" style="background-image: url('${item.image}');">
-    //         <h3>${item.title}</h3>
-    //       </div>
-    //       <div class="flip-back">
-    //         <p>${item.description}</p>
-    //       </div>
-    //     </div>
-    //   </div>
-    // `).join("");
-  })
+      // To enable flip cards instead of feature-card, uncomment below:
+      // container.innerHTML = filtered.map(item => `
+      //   <div class="flip-card">
+      //     <div class="flip-inner">
+      //       <div class="flip-front" style="background-image: url('${item.image}');">
+      //         <h3>${item.title}</h3>
+      //       </div>
+      //       <div class="flip-back">
+      //         <p>${item.description}</p>
+      //       </div>
+      //     </div>
+      //   </div>
+      // `).join("");
+    })
     .catch(err => {
       console.error("Failed to load Dynatrace features:", err);
       container.innerHTML = `<p style="color:red;">Could not load Dynatrace features.</p>`;
@@ -277,7 +296,8 @@ function loadNewRelicFeatures(category = "newrelic") {
           <p>${item.description}</p>
         </div>
       `).join("");
-      // flip cards
+
+      // To enable flip cards instead of feature-card, uncomment below:
       // container.innerHTML = filtered.map(item => `
       //   <div class="flip-card">
       //     <div class="flip-inner">
@@ -296,4 +316,3 @@ function loadNewRelicFeatures(category = "newrelic") {
       container.innerHTML = `<p style="color:red;">Could not load New Relic features.</p>`;
     });
 }
-
