@@ -39,7 +39,8 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  background: #00bcd4;
+  /* background: #00bcd4; */
+  background: #002b36;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -64,7 +65,7 @@ nav {
   transition: color 0.3s;
 }
 .nav-links a:hover {
-  color: #e0f7fa;
+  color: #00bcd4;
 }
 .nav-container {
   max-width: 1200px;
@@ -96,7 +97,7 @@ nav {
     right: -100%; /* Hidden off-screen */
     height: 100vh;
     width: 250px;
-    background: #00bcd4;
+    background: #002b36;
     flex-direction: column;
     justify-content: flex-start; /* ✅ Align items at top */
     align-items: flex-start;
@@ -149,7 +150,8 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #00bcd4;
+    /* background: #00bcd4; */
+    background: #002b36;
     z-index: 1000;
   }
 }
@@ -188,6 +190,7 @@ nav {
 @media (min-width: 769px) {
   .dropdown:hover .dropdown-menu {
     display: block;
+    background: #0097a7;
   }
 
   .dropdown-menu {
@@ -743,4 +746,35 @@ footer {
   font-size: 0.95rem;
 }
 
+/* ===nav logo=== */
+.logo a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: white;
+}
+
+.logo-img {
+  height: 40px;       /* Desktop size */
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 32px;     /* Smaller logo for mobile */
+  }
+
+  .logo-text {
+    font-size: 1.2rem;
+  }
+}
 
