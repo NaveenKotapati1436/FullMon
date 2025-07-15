@@ -1,5 +1,4 @@
-const isLocalhost =
-  location.hostname === "localhost" || location.hostname === "127.0.0.1";
+const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1";
 const basePath = isLocalhost ? "" : "/FullMon";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -50,12 +49,47 @@ document.addEventListener("DOMContentLoaded", () => {
   setupServiceModal();
 });
 
+// Scroll Show/Hide Navbar
+// ----------------------
+function setupNavbarScroll() {
+  const nav = document.querySelector("nav");
+  if (!nav) return;
+
+  let lastScrollY = window.scrollY;
+  let currentOffset = 0;
+  const maxOffset = nav.offsetHeight; // amount to hide
+  let ticking = false;
+
+  function onScroll() {
+    const currentScrollY = window.scrollY;
+    const delta = currentScrollY - lastScrollY;
+
+    currentOffset += delta;
+
+    // Clamp offset between 0 and maxOffset
+    currentOffset = Math.max(0, Math.min(maxOffset, currentOffset));
+
+    // Apply transform
+    nav.style.transform = `translateY(-${currentOffset}px)`;
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  });
+}
+
 function getPageFromPath(pathname) {
   return pathname.replace(`${basePath}/`, "") || "home";
 }
 
 function loadNavbar() {
-  fetch(`${basePath}/navbar.html`)
+  return fetch(`${basePath}/navbar.html`)
     .then((res) => res.text())
     .then((html) => {
       document.getElementById("navbar-container").innerHTML = html;
@@ -80,6 +114,8 @@ function loadNavbar() {
         navLinks?.classList.remove("show");
         overlay?.classList.remove("show");
       });
+
+      setupNavbarScroll(); 
     })
     .catch((err) => console.error("Navbar load error:", err));
 }

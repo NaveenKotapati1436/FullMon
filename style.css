@@ -47,6 +47,11 @@ nav {
   align-items: center;
   flex-wrap: wrap;
   z-index: 1000;
+  transition: transform 0.15s ease-out;
+}
+/* Hide state */
+nav.hide {
+  transform: translateY(-100%);
 }
 .logo a {
   /* font-family: 'Courier New', Courier, monospace; */
