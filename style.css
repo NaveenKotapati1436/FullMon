@@ -281,7 +281,7 @@ nav {
 }
 /* === General Sections === */
 .section {
-  padding: 3rem 2rem;
+  padding: 5rem 2rem 3rem;
   text-align: center;
 }
 .section h2 {
@@ -770,7 +770,7 @@ footer {
 
 @media (max-width: 768px) {
   .logo-img {
-    height: 32px;     /* Smaller logo for mobile */
+    height: 32px; 
   }
 
   .logo-text {
