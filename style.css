@@ -571,9 +571,33 @@ footer {
 }
 
 @media (max-width: 768px) {
-  .approach-cards {
-    animation: none;
+  .approach-carousel-wrapper {
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  .approach-cards {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 1rem;
+    padding-bottom: 1rem;
+
+    /* 🔧 This disables the auto-scroll on mobile */
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .flip-card {
+    flex: 0 0 85%; /* Show part of the next card */
+    scroll-snap-align: start;
+    transition: transform 0.3s ease;
+  }
+
+  .approach-cards::-webkit-scrollbar {
+    display: none;
   }
 }
 

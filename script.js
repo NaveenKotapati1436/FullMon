@@ -223,17 +223,25 @@ function loadApproachCards(category = "home") {
 function setupSwipeOnMobile(container) {
   if (window.innerWidth >= 768) return;
 
-  let startX = 0, scrollLeft = 0;
+  let isDown = false;
+  let startX;
+  let scrollLeft;
 
-  container.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].pageX - container.offsetLeft;
+  container.addEventListener('touchstart', (e) => {
+    isDown = true;
+    startX = e.touches[0].pageX;
     scrollLeft = container.scrollLeft;
   });
 
-  container.addEventListener("touchmove", (e) => {
-    const x = e.touches[0].pageX - container.offsetLeft;
-    const walk = (startX - x) * 1.5;
+  container.addEventListener('touchmove', (e) => {
+    if (!isDown) return;
+    const x = e.touches[0].pageX;
+    const walk = (startX - x); // Negative = swipe right, Positive = swipe left
     container.scrollLeft = scrollLeft + walk;
+  });
+
+  container.addEventListener('touchend', () => {
+    isDown = false;
   });
 }
 
