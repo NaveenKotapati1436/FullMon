@@ -1,4 +1,5 @@
-const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+const isLocalhost =
+  location.hostname === "localhost" || location.hostname === "127.0.0.1";
 const basePath = isLocalhost ? "" : "/FullMon";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -18,17 +19,27 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.body.addEventListener("click", (e) => {
-    const card = e.target.closest(".flip-card");
-  
-    // Close all cards if tap is outside
-    if (!card) {
-      document.querySelectorAll(".flip-card.flipped").forEach(c => c.classList.remove("flipped"));
+    const clickedCard = e.target.closest(".flip-card");
+
+    // If tap is outside any card, close all
+    if (!clickedCard) {
+      document
+        .querySelectorAll(".flip-card.flipped")
+        .forEach((c) => c.classList.remove("flipped"));
       return;
     }
-    // Otherwise, toggle that specific card
-    card.classList.toggle("flipped");
-  });
 
+    // If this card is already flipped, unflip it
+    if (clickedCard.classList.contains("flipped")) {
+      clickedCard.classList.remove("flipped");
+    } else {
+      // Otherwise, unflip others and flip this one
+      document
+        .querySelectorAll(".flip-card.flipped")
+        .forEach((c) => c.classList.remove("flipped"));
+      clickedCard.classList.add("flipped");
+    }
+  });
 
   window.addEventListener("popstate", () => {
     const path = getPageFromPath(location.pathname);
@@ -45,8 +56,8 @@ function getPageFromPath(pathname) {
 
 function loadNavbar() {
   fetch(`${basePath}/navbar.html`)
-    .then(res => res.text())
-    .then(html => {
+    .then((res) => res.text())
+    .then((html) => {
       document.getElementById("navbar-container").innerHTML = html;
 
       const hamburger = document.getElementById("hamburger");
@@ -70,25 +81,25 @@ function loadNavbar() {
         overlay?.classList.remove("show");
       });
     })
-    .catch(err => console.error("Navbar load error:", err));
+    .catch((err) => console.error("Navbar load error:", err));
 }
 
 function loadFooter() {
   fetch(`${basePath}/footer.html`)
-    .then(res => res.text())
-    .then(html => {
+    .then((res) => res.text())
+    .then((html) => {
       document.getElementById("footer-container").innerHTML = html;
     })
-    .catch(err => console.error("Footer load error:", err));
+    .catch((err) => console.error("Footer load error:", err));
 }
 
 function loadPage(page, addToHistory = true) {
   fetch(`${basePath}/pages/${page}.html`)
-    .then(res => {
+    .then((res) => {
       if (!res.ok) throw new Error(`Page not found: ${page}`);
       return res.text();
     })
-    .then(html => {
+    .then((html) => {
       document.getElementById("main-content").innerHTML = html;
 
       if (addToHistory) {
@@ -109,7 +120,7 @@ function loadPage(page, addToHistory = true) {
         }
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       document.getElementById("main-content").innerHTML = `
         <h2>Page Not Found</h2>
@@ -125,13 +136,13 @@ function setupContactForm() {
 
   function updateSelectedTags() {
     const selected = Array.from(checkboxes)
-      .filter(cb => cb.checked)
-      .map(cb => `<span class="tag">${cb.value}</span>`)
+      .filter((cb) => cb.checked)
+      .map((cb) => `<span class="tag">${cb.value}</span>`)
       .join(" ");
     previewContainer.innerHTML = selected || "None";
   }
 
-  checkboxes.forEach(cb => cb.addEventListener("change", updateSelectedTags));
+  checkboxes.forEach((cb) => cb.addEventListener("change", updateSelectedTags));
   updateSelectedTags();
 }
 
@@ -143,13 +154,13 @@ function setupDropdownToggle() {
       const dropdown = toggle.closest(".dropdown");
       const menu = dropdown?.querySelector(".dropdown-menu");
 
-      document.querySelectorAll(".dropdown-menu.show").forEach(m => {
+      document.querySelectorAll(".dropdown-menu.show").forEach((m) => {
         if (m !== menu) m.classList.remove("show");
       });
 
       menu?.classList.toggle("show");
     } else {
-      document.querySelectorAll(".dropdown-menu.show").forEach(menu => {
+      document.querySelectorAll(".dropdown-menu.show").forEach((menu) => {
         menu.classList.remove("show");
       });
     }
@@ -179,7 +190,7 @@ function setupServiceModal() {
     }
   });
 
-  serviceButtons?.forEach(btn => {
+  serviceButtons?.forEach((btn) => {
     btn.addEventListener("click", () => {
       const page = btn.getAttribute("data-page");
       modal.style.display = "none";
@@ -196,15 +207,17 @@ function loadApproachCards(category = "home") {
   }
 
   fetch(`${basePath}/json/cards.json`)
-    .then(res => res.json())
-    .then(cards => {
-      const filtered = cards.filter(card => card.category === category);
+    .then((res) => res.json())
+    .then((cards) => {
+      const filtered = cards.filter((card) => card.category === category);
       if (filtered.length === 0) {
         container.innerHTML = `<p>No cards found for ${category}.</p>`;
         return;
       }
 
-      container.innerHTML = filtered.map(card => `
+      container.innerHTML = filtered
+        .map(
+          (card) => `
         <div class="flip-card">
           <div class="flip-inner">
             <div class="flip-front" style="background-image: url('${card.image}');">
@@ -215,11 +228,13 @@ function loadApproachCards(category = "home") {
             </div>
           </div>
         </div>
-      `).join("");
+      `
+        )
+        .join("");
 
       setupSwipeOnMobile(container);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("Failed to load cards:", err);
       container.innerHTML = `<p style="color:red;">Could not load services.</p>`;
     });
@@ -232,20 +247,20 @@ function setupSwipeOnMobile(container) {
   let startX;
   let scrollLeft;
 
-  container.addEventListener('touchstart', (e) => {
+  container.addEventListener("touchstart", (e) => {
     isDown = true;
     startX = e.touches[0].pageX;
     scrollLeft = container.scrollLeft;
   });
 
-  container.addEventListener('touchmove', (e) => {
+  container.addEventListener("touchmove", (e) => {
     if (!isDown) return;
     const x = e.touches[0].pageX;
-    const walk = (startX - x); // Negative = swipe right, Positive = swipe left
+    const walk = startX - x; // Negative = swipe right, Positive = swipe left
     container.scrollLeft = scrollLeft + walk;
   });
 
-  container.addEventListener('touchend', () => {
+  container.addEventListener("touchend", () => {
     isDown = false;
   });
 }
@@ -258,21 +273,25 @@ function loadDynatraceFeatures(category = "dynatrace") {
   }
 
   fetch(`${basePath}/json/dynatrace.json`)
-    .then(res => res.json())
-    .then(data => {
-      const filtered = data.filter(item => item.category === category);
+    .then((res) => res.json())
+    .then((data) => {
+      const filtered = data.filter((item) => item.category === category);
       if (filtered.length === 0) {
         container.innerHTML = `<p>No features found for ${category}.</p>`;
         return;
       }
 
-      container.innerHTML = filtered.map(item => `
+      container.innerHTML = filtered
+        .map(
+          (item) => `
         <div class="feature-card">
           <img src="${item.image}" alt="${item.title}">
           <h4>${item.title}</h4>
           <p>${item.description}</p>
         </div>
-      `).join("");
+      `
+        )
+        .join("");
 
       // To enable flip cards instead of feature-card, uncomment below:
       // container.innerHTML = filtered.map(item => `
@@ -288,7 +307,7 @@ function loadDynatraceFeatures(category = "dynatrace") {
       //   </div>
       // `).join("");
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("Failed to load Dynatrace features:", err);
       container.innerHTML = `<p style="color:red;">Could not load Dynatrace features.</p>`;
     });
@@ -302,21 +321,25 @@ function loadNewRelicFeatures(category = "newrelic") {
   }
 
   fetch(`${basePath}/json/newrelic.json`)
-    .then(res => res.json())
-    .then(data => {
-      const filtered = data.filter(item => item.category === category);
+    .then((res) => res.json())
+    .then((data) => {
+      const filtered = data.filter((item) => item.category === category);
       if (filtered.length === 0) {
         container.innerHTML = `<p>No features found for ${category}.</p>`;
         return;
       }
 
-      container.innerHTML = filtered.map(item => `
+      container.innerHTML = filtered
+        .map(
+          (item) => `
         <div class="feature-card">
           <img src="${item.image}" alt="${item.title}">
           <h4>${item.title}</h4>
           <p>${item.description}</p>
         </div>
-      `).join("");
+      `
+        )
+        .join("");
 
       // To enable flip cards instead of feature-card, uncomment below:
       // container.innerHTML = filtered.map(item => `
@@ -332,7 +355,7 @@ function loadNewRelicFeatures(category = "newrelic") {
       //   </div>
       // `).join("");
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("Failed to load New Relic features:", err);
       container.innerHTML = `<p style="color:red;">Could not load New Relic features.</p>`;
     });
