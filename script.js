@@ -19,11 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.body.addEventListener("click", (e) => {
     const card = e.target.closest(".flip-card");
-    if (card) {
-      // Toggle flip on tap (mobile)
-      card.classList.toggle("flipped");
+  
+    // Close all cards if tap is outside
+    if (!card) {
+      document.querySelectorAll(".flip-card.flipped").forEach(c => c.classList.remove("flipped"));
+      return;
     }
+    // Otherwise, toggle that specific card
+    card.classList.toggle("flipped");
   });
+
 
   window.addEventListener("popstate", () => {
     const path = getPageFromPath(location.pathname);
