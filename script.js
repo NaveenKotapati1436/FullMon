@@ -201,10 +201,7 @@ function setupServiceModal() {
 
 function loadApproachCards(category = "home") {
   const container = document.getElementById("card-container");
-  if (!container) {
-    console.warn("#card-container not found");
-    return;
-  }
+  if (!container) return;
 
   fetch(`${basePath}/json/cards.json`)
     .then((res) => res.json())
@@ -215,7 +212,10 @@ function loadApproachCards(category = "home") {
         return;
       }
 
-      container.innerHTML = filtered
+      // Duplicate cards for smooth infinite scroll effect
+      const allCards = [...filtered, ...filtered];
+
+      container.innerHTML = allCards
         .map(
           (card) => `
         <div class="flip-card">
