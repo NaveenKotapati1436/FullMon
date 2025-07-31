@@ -1,5 +1,14 @@
+// const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+// const basePath = isLocalhost ? "" : "/FullMon";
+
 const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1";
-const basePath = isLocalhost ? "" : "/FullMon";
+const isGitHubPages = location.hostname.includes("github.io");
+
+const basePath = isLocalhost
+  ? ""
+  : isGitHubPages
+    ? "/FullMon"
+    : ""; // For custom domain
 
 document.addEventListener("DOMContentLoaded", () => {
   loadNavbar();
