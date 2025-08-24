@@ -663,8 +663,8 @@ footer {
 }
 
 .flip-front {
-  background-size: contain;
-  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-repeat: no-repeat; */
   background-position: center;
   color: white;
   font-size: 1.4rem;
