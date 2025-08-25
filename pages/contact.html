@@ -1,44 +1,91 @@
 <section class="section contact">
   <h2>Contact Us</h2>
-  <p>We’d love to hear about your monitoring needs. Reach out today for a free consultation or to learn more about how FullstackMon can support your team.</p>
-
-  <form id="contactForm" action="https://formspree.io/f/naveenkotapati46@gmail.com" method="POST" class="contact-form">
+  <p>
+    We’d love to hear about your monitoring needs. Reach out today for a free
+    consultation or to learn more about how FullstackMon can support your team.
+  </p>
+  <form
+    id="contactForm"
+    class="contact-form"
+    action="javascript:void(0)"
+    novalidate
+  >
     <div class="form-grid">
+      <!-- Name -->
       <div class="form-group">
         <label for="name">Your Name *</label>
-        <input type="text" id="name" name="name" required />
+        <input
+          type="text"
+          id="name"
+          name="user_name"
+          required
+          pattern="^[A-Za-z\s]+$"
+          title="Name should only contain letters and spaces"
+        />
       </div>
 
+      <!-- Email -->
       <div class="form-group">
         <label for="email">Your Email *</label>
-        <input type="email" id="email" name="email" required />
+        <input
+          type="email"
+          id="email"
+          name="user_email"
+          required
+          title="Please enter a valid email address"
+        />
       </div>
 
+      <!-- Phone -->
       <div class="form-group">
         <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone" placeholder="+1-234-567-8901" />
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          pattern="^[0-9]{10}$"
+          maxlength="10"
+          title="Phone number must be exactly 10 digits"
+          placeholder="1234567890"
+        />
       </div>
 
+      <!-- Organization -->
       <div class="form-group">
         <label for="organization">Organization Name *</label>
-        <input type="text" id="organization" name="organization" required />
+        <input
+          type="text"
+          id="organization"
+          name="organization"
+          required
+          title="Please enter your organization name"
+        />
       </div>
 
+      <!-- Website -->
       <div class="form-group full">
         <label for="website">Website / App URL</label>
-        <input type="url" id="website" name="website" placeholder="https://yourcompany.com" />
+        <input
+          type="url"
+          id="website"
+          name="website"
+          placeholder="https://yourcompany.com"
+          pattern="https?://.+"
+          title="Please enter a valid URL starting with http:// or https://"
+        />
       </div>
 
+      <!-- Message -->
       <div class="form-group full">
         <label for="message">Additional Message</label>
-        <textarea id="message" name="message" rows="5" placeholder="Tell us more about your application or requirements"></textarea>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          placeholder="Tell us more about your application or requirements"
+        ></textarea>
       </div>
     </div>
-
-    <input type="hidden" name="_redirect" value="thank-you.html">
-
-    <input type="hidden" name="_subject" value="New business inquiry from FullstackMon site" />
     <button type="submit" class="btn">Send Message</button>
   </form>
 </section>
-

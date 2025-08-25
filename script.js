@@ -175,6 +175,30 @@ function loadPage(page, addToHistory = true) {
 }
 
 function setupContactForm() {
+  const contactForm = document.getElementById("contactForm");
+  if (!contactForm) return;
+
+  // Attach EmailJS submit handler
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    if (!this.checkValidity()) {
+      // Trigger native validation UI
+      this.reportValidity();
+      return;
+    }
+
+    emailjs.sendForm("service_qps2jyq", "template_6esljpm", this).then(
+      () => {
+        loadPage("thankyou", true);
+      },
+      (err) => {
+        console.error("EmailJS Error:", err);
+        alert("❌ Failed to send message. Please try again.");
+      }
+    );
+  });
+
   const checkboxes = document.querySelectorAll('input[name="services[]"]');
   const previewContainer = document.getElementById("service-tags-preview");
   if (!previewContainer) return;
