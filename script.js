@@ -178,6 +178,10 @@ function setupContactForm() {
   const contactForm = document.getElementById("contactForm");
   if (!contactForm) return;
 
+  const submitBtn = document.getElementById("submitBtn");
+  const btnText = document.getElementById("btnText");
+  const btnDots = document.getElementById("btnDots");
+
   // Attach EmailJS submit handler
   contactForm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -188,6 +192,11 @@ function setupContactForm() {
       return;
     }
 
+    // Show loading animation
+    submitBtn.classList.add("loading");
+    btnText.textContent = "Sending";
+    btnDots.style.display = "inline-flex";
+
     emailjs.sendForm("service_qps2jyq", "template_6esljpm", this).then(
       () => {
         loadPage("thankyou", true);
@@ -196,7 +205,12 @@ function setupContactForm() {
         console.error("EmailJS Error:", err);
         alert("❌ Failed to send message. Please try again.");
       }
-    );
+    ).finally(() => {
+      // Reset in case of error or slow navigation
+      submitBtn.classList.remove("loading");
+      btnText.textContent = "Send Message";
+      btnDots.style.display = "none";
+    });
   });
 
   const checkboxes = document.querySelectorAll('input[name="services[]"]');
