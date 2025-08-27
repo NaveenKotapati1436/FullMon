@@ -282,6 +282,76 @@ function setupServiceModal() {
   });
 }
 
+
+//  naveens code 
+// function loadApproachCards(category = "home") {
+//   const container = document.getElementById("card-container");
+//   if (!container) return;
+
+//   fetch(`${basePath}/json/cards.json`)
+//     .then((res) => res.json())
+//     .then((cards) => {
+//       const filtered = cards.filter((card) => card.category === category);
+//       if (filtered.length === 0) {
+//         container.innerHTML = `<p>No cards found for ${category}.</p>`;
+//         return;
+//       }
+
+//       // Duplicate cards for smooth infinite scroll effect
+//       const allCards = [...filtered, ...filtered];
+
+//       container.innerHTML = allCards
+//         .map(
+//           (card) => `
+//         <div class="flip-card">
+//           <div class="flip-inner">
+//             <div class="flip-front" style="background-image: url('${card.image}');">
+//               <h3>${card.title}</h3>
+//             </div>
+//             <div class="flip-back">
+//               <p>${card.description}</p>
+//             </div>
+//           </div>
+//         </div>
+//       `
+//         )
+//         .join("");
+
+//       setupSwipeOnMobile(container);
+//     })
+//     .catch((err) => {
+//       console.error("Failed to load cards:", err);
+//       container.innerHTML = `<p style="color:red;">Could not load services.</p>`;
+//     });
+// }
+
+// function setupSwipeOnMobile(container) {
+//   if (window.innerWidth >= 768) return;
+
+//   let isDown = false;
+//   let startX;
+//   let scrollLeft;
+
+//   container.addEventListener("touchstart", (e) => {
+//     isDown = true;
+//     startX = e.touches[0].pageX;
+//     scrollLeft = container.scrollLeft;
+//   });
+
+//   container.addEventListener("touchmove", (e) => {
+//     if (!isDown) return;
+//     const x = e.touches[0].pageX;
+//     const walk = startX - x; // Negative = swipe right, Positive = swipe left
+//     container.scrollLeft = scrollLeft + walk;
+//   });
+
+//   container.addEventListener("touchend", () => {
+//     isDown = false;
+//   });
+// }
+
+
+// Azam changed code 
 function loadApproachCards(category = "home") {
   const container = document.getElementById("card-container");
   if (!container) return;
@@ -295,8 +365,14 @@ function loadApproachCards(category = "home") {
         return;
       }
 
-      // Duplicate cards for smooth infinite scroll effect
-      const allCards = [...filtered, ...filtered];
+   const isMobile = window.innerWidth < 768; 
+      let allCards;
+
+      if (isMobile) {
+        allCards = filtered; // show once on mobile
+      } else {
+        allCards = [...filtered, ...filtered]; // duplicate for smooth infinite scroll
+      }
 
       container.innerHTML = allCards
         .map(
@@ -315,7 +391,7 @@ function loadApproachCards(category = "home") {
         )
         .join("");
 
-      setupSwipeOnMobile(container);
+      setupInfiniteScroll(container);
     })
     .catch((err) => {
       console.error("Failed to load cards:", err);
@@ -323,28 +399,25 @@ function loadApproachCards(category = "home") {
     });
 }
 
-function setupSwipeOnMobile(container) {
-  if (window.innerWidth >= 768) return;
+function setupInfiniteScroll(container) {
 
-  let isDown = false;
-  let startX;
-  let scrollLeft;
+    const isMobile = window.innerWidth < 768; // treat <768px as mobile
 
-  container.addEventListener("touchstart", (e) => {
-    isDown = true;
-    startX = e.touches[0].pageX;
-    scrollLeft = container.scrollLeft;
-  });
+  if (isMobile) {
+    // On mobile: do nothing (manual scroll, only filtered items once)
+    return;
+  }
 
-  container.addEventListener("touchmove", (e) => {
-    if (!isDown) return;
-    const x = e.touches[0].pageX;
-    const walk = startX - x; // Negative = swipe right, Positive = swipe left
-    container.scrollLeft = scrollLeft + walk;
-  });
+  const scrollWidth = container.scrollWidth / 2; // half is original set
 
-  container.addEventListener("touchend", () => {
-    isDown = false;
+  container.addEventListener("scroll", () => {
+    if (container.scrollLeft >= scrollWidth * 0.95) {
+      // If near the end → jump back to start
+      container.scrollLeft -= scrollWidth;
+    } else if (container.scrollLeft <= scrollWidth * 0.05) {
+      // If near the start → jump to end
+      container.scrollLeft += scrollWidth;
+    }
   });
 }
 

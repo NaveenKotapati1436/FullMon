@@ -577,15 +577,17 @@ footer {
   animation: scroll-left 40s linear infinite;
   will-change: transform;
   overflow: hidden;
-  width: max-content;      
-  scroll-snap-type: none;   
+  width: max-content;       
+  scroll-behavior: smooth;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* for iOS smooth scrolling */
 }
 
 .approach-carousel-wrapper {
   overflow: hidden;
   position: relative;
   width: 100%;
-  max-width: 100vw;
+  max-width: fit-content;
 }
 
 @media (max-width: 768px) {
