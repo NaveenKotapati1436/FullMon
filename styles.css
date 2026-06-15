@@ -446,3 +446,22 @@ h1 {
   .metric-card.large { align-items: flex-start; gap: 20px; flex-direction: column; }
   .footer-bottom { flex-direction: column; }
 }
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 32px; 
+  }
+
+  .logo-text {
+    font-size: 1.2rem;
+    padding-top: 2px;
+  }
+}
